@@ -5,7 +5,7 @@
 
 var express = require("express");
 var bodyParser = require("body-parser");
-var bodyParser = require("path");
+//var bodyParser = require("path");
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -28,8 +28,8 @@ app.use(bodyParser.json());
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
 // ================================================================================
 
-require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+require("./routing/apiRoutes")(app);
+require("./routing/htmlRoutes")(app);
 
 // =============================================================================
 // LISTENER
