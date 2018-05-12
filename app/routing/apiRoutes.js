@@ -36,26 +36,59 @@ module.exports = function(app) {
         // It will do this by subtracting the question values
         // and choosing the friend with the least differences
         // req.body is available since we're using the body-parser middleware
-        var friendCompatability = [0,0,0,0,0,0];
+        // req.body is the returned object
+        // console.log(req.body.scores);
+        // console.log("res:");
+        // console.log(res);
+        var friendCompatability = [0,0,0,0,0,0,0,0,0,0];
+        var index = [0,0,0,0,0,0];
+
         for(var i = 0; i < friendData.length; i++) {
-            for (var j = 0; friendData[i].scores[j]; j++) {
-                friendCompatability[0] = +Math.abs(friendData[i].scores[j] - res[j]);
+            console.log("Friends being compared:");
+            console.log(friendData[i].name);
+            for (var j = 0; j < friendData[i].scores.length; j++) {
+                console.log("Comp friend: " + friendData[i].scores[j] + " res friend: " + req.body.scores[j]);
+                friendCompatability[j] += Math.abs(friendData[i].scores[j] - req.body.scores[j]);
             }
+
+            // add the results for the friend
+            for (var k = 0; k < friendCompatability.length; k++){
+                index[i] += friendCompatability[k]
+            }
+
+            // Compatability Check
+            // console.log("--------------------------")
+            // console.log("compatability Score:");
+            // console.log(friendCompatability);
+
+            // clear friend compatability
+            friendCompatability = [0,0,0,0,0,0,0,0,0,0];
+
         }
+
+        // Compatability Check
+        console.log("--------------------------")
+        // console.log("compatability Score:");
+        // console.log(friendCompatability);
+        console.log("index Totals:");
+        console.log(index);
+        console.log("");
 
         //sort which position in the friendCompatability array has the lowest value
         var min = 0;
-        var temp = friendCompatability[0];
-        for (var i = 1; i < friendCompatability.length; i++) {
-            if (friendCompatability[i] < temp) {
-                temp = friendCompatability[i];
+        var temp = index[0];
+        for (var i = 1; i < index.length; i++) {
+            if (index[i] < temp) {
+                temp = index[i];
                 min = i;
             }
         }
+        console.log("friend Data Result");
+        console.log(friendData[min].name);
 
         //return the value
-        friendData[min].push(req.body);
-        res.json(true);
+
+        res.json(friendData[min]);
 
     });
 
